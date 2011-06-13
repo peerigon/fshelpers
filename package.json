@@ -6,7 +6,7 @@
   "repository": "git://github.com/jhnns/FileWalker.git",
   "author": "Johannes Ewald <johannes.ewald@gmx.de>",
   "main": "./lib/index.js",
-  "keywords": ["file", "directory", "walker", "filesystem", "simple", "leightweight"],
+  "keywords": ["file", "directory", "folder", "walker", "filesystem", "system", "simple", "leightweight"],
   "dependencies": {},
   "engines": {
     "node": "0.4.x"
