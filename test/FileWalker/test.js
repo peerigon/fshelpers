@@ -227,7 +227,7 @@ function test11() {
         })
         .on('end', function() {
             assert.equal(countedItems, 8);
-            console.log('All tests ok');
+            start(test12);
         })
         .walk(path.resolve('./folder1'));
     fileWalker
@@ -236,5 +236,22 @@ function test11() {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-console.log('There should be an "All tests ok" ...');
+function test12() {
+    var countedItems = 0;
+    
+    reset();
+    fileWalker
+        .on('file', function() {
+            countedItems++;
+        })
+        .on('end', function() {
+            assert.equal(countedItems, 2);
+            console.log('All tests ok');
+        })
+        .walk(path.resolve('./folder1'), 1);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+console.log('There should be an "All tests ok" at the end ...');
 test1();
