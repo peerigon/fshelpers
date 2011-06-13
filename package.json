@@ -1,0 +1,14 @@
+{
+  "name": "FileWalker",
+  "description": "A lightweight file walker for NodeJS.",
+  "version": "0.1.0",
+  "homepage": "http://github.com/jhnns/FileWalker",
+  "repository": "git://github.com/jhnns/FileWalker.git",
+  "author": "Johannes Ewald <johannes.ewald@gmx.de>",
+  "main": "./lib/index.js",
+  "keywords": ["file", "directory", "walker", "filesystem", "simple", "leightweight"],
+  "dependencies": {},
+  "engines": {
+    "node": "0.4.x"
+  }
+}
