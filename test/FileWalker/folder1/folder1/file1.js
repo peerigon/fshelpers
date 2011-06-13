@@ -1,1 +1,1 @@
-folder1/folder1/file1.js
+/folder1/folder1/file1.js

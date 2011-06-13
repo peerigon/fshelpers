@@ -1,1 +1,1 @@
-folder1/file2.txt
+/folder1/file2.txt
