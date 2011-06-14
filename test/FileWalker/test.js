@@ -246,9 +246,35 @@ function test12() {
         })
         .on('end', function() {
             assert.equal(countedItems, 2);
-            console.log('All tests ok');
+            start(test13);
         })
         .walk(path.resolve('./folder1'), 1);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+function test13() {
+    var path1;
+    var path2;
+    
+    reset();
+    
+    function finished(path, data) {
+        path2 = path;
+        assert.equal(path1, path2);
+        console.log('All tests ok');
+    }
+    
+    fileWalker
+        .once('fileRead', function(path) {
+            path1 = path;
+        })
+        .walk(path.resolve('./folder1/file1.js'), FileWalker.RECURSIVE, 'utf8');
+    fileWalker
+        .once('idle', function() {
+            fileWalker.readFile(path.resolve('./folder1/file1.js'), 'utf8', finished);
+        })
+        
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
