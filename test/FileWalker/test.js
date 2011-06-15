@@ -10,7 +10,7 @@ function trimPath(path) {
 }
 
 function reset() {
-    fileWalker = new FileWalker();
+    fileWalker.reset();
     itemsFound = {};
 }
 
@@ -222,7 +222,7 @@ function test11() {
     
     reset();
     fileWalker
-        .on('file', function() {
+        .on('file', function(path) {
             countedItems++;
         })
         .on('end', function() {
@@ -259,12 +259,12 @@ function test13() {
     
     reset();
     
-    function finished(path, data) {
+    function finished(path) {
         path2 = path;
         assert.equal(path1, path2);
-        console.log('All tests ok');
+        start(test14);
     }
-    
+
     fileWalker
         .once('fileRead', function(path) {
             path1 = path;
@@ -274,6 +274,64 @@ function test13() {
         .once('idle', function() {
             fileWalker.readFile(path.resolve('./folder1/file1.js'), 'utf8', finished);
         })
+        
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+function test14() {  
+    var dir = {},
+        times = 0;
+    
+    reset();
+    
+    function finished() {
+        var path;
+        
+        times++;
+        if(times === 2) {
+            for(path in dir) {
+                assert.equal(dir[path], 2);
+            }
+            start(test15);
+            
+        }
+    }
+    
+    fileWalker
+        .on('fileOrDir', function(path) {
+            if(dir.hasOwnProperty(path)) {
+                dir[path]++;
+            } else {
+                dir[path] = 1;
+            }
+        })
+        .on('end', finished)
+        .walkSync(path.resolve('./folder1'));
+    fileWalker
+        .walk(path.resolve('./folder1'));
+        
+        
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+function test15() {
+    reset();
+    
+    function finished() {
+        console.log('All tests ok');
+    }
+    
+    fileWalker
+        .once('fileOrDir', function(path) {
+            fileWalker.on('fileOrDir', function() {
+                throw new Error('This event should not be fired');
+            });
+            fileWalker.on('idle', finished);
+            fileWalker.stop();
+        })
+        .walkSync(path.resolve('./folder1'));
         
 }
 
