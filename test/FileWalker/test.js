@@ -280,8 +280,7 @@ function test13() {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 function test14() {  
-    var dir = {},
-        times = 0;
+    var times = 0;
     
     reset();
     
@@ -290,8 +289,8 @@ function test14() {
         
         times++;
         if(times === 2) {
-            for(path in dir) {
-                assert.equal(dir[path], 2);
+            for(path in itemsFound) {
+                assert.equal(itemsFound[path], 2);
             }
             start(test15);
             
@@ -300,10 +299,10 @@ function test14() {
     
     fileWalker
         .on('fileOrDir', function(path) {
-            if(dir.hasOwnProperty(path)) {
-                dir[path]++;
+            if(itemsFound.hasOwnProperty(path)) {
+                itemsFound[path]++;
             } else {
-                dir[path] = 1;
+                itemsFound[path] = 1;
             }
         })
         .on('end', finished)
@@ -320,7 +319,7 @@ function test15() {
     reset();
     
     function finished() {
-        console.log('All tests ok');
+        start(test16);
     }
     
     fileWalker
@@ -333,6 +332,60 @@ function test15() {
         })
         .walkSync(path.resolve('./folder1'));
         
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+function test16() {
+    var times = 0;
+    
+    reset();
+    
+    function finished(path, collection) {
+        var i;
+        
+        itemsFound[times] = {};
+        
+        for(i=0; i<collection.length; i++) {
+            itemsFound[times][collection[i]] = true;
+        }
+        times++;
+        if(times === 2) {
+            assert.deepEqual(itemsFound[1], itemsFound[0]);
+            start(test17);
+        }
+    }
+    
+    fileWalker
+        .on('end', finished)
+        .walkSync(path.resolve('./folder1'));
+        
+    fileWalker
+        .walk(path.resolve('./folder1'));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+function test17() {
+    var times = 0;
+    
+    reset();
+    
+    function finished(path, collection) {
+        itemsFound[times] = collection;
+        times++;
+        if(times === 2) {
+            assert.deepEqual(itemsFound[1], itemsFound[0]);
+            console.log('All tests ok');
+        }
+    }
+    
+    fileWalker
+        .on('end', finished)
+        .walkSync(path.resolve('./folder1'), FileWalker.RECURSIVE, 'utf8');
+        
+    fileWalker
+        .walk(path.resolve('./folder1'), FileWalker.RECURSIVE, 'utf8');
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
