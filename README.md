@@ -1,8 +1,7 @@
-FileWalker
+fshelpers
 ========
 
-A lightweight asynchronous file walker for NodeJS. This class is especially
-designed for collecting and reading a bunch of files.
+Some helpers for more convenient file system operations in nodeJS. Sync and async operations are both supported.
 
 Further documentation coming soon...
 
