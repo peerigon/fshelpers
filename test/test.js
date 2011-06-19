@@ -6,7 +6,7 @@ reporter.run(
         'Reader/Reader.js',
         'wrap/wrap.js',
         'collectErr/collectErr.js',
-        'dir/dir.js',
-        'dir/dirSync.js'
+        'remove/remove.js',
+        'makeDir/makeDir.js'
     ]
 );

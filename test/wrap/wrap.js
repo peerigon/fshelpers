@@ -133,7 +133,7 @@ module.exports = testCase({
         wrappedSomething = wrap(doSomethingWrong);
         wrappedSomething('arg1', 'arg2', 'arg3', callback);
     },
-    doSomethingWrongAndSaveError: function(test) {
+    doSomethingWrongAndCollectError: function(test) {
         var errors = [];
         
         function callback(err) {
