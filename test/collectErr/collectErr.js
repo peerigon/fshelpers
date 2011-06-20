@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    collectErr = require('../../lib/collectErr');
+    collectErr = require('../../lib').util.collectErr;
     
 ///////////////////////////////////////////////////////////////////////////////////////
 

@@ -31,7 +31,7 @@ function setup(type) {
 exports.remove = testCase({
     file: function(test) {
         function finished(errors) {
-            test.equals(errors.length, 0);
+            test.strictEqual(errors, null);
             test.equals(pathUtil.existsSync(__dirname + '/async/folder/folder1/file2.txt'), false);
             test.done();
         }
@@ -42,7 +42,7 @@ exports.remove = testCase({
     },
     dir: function(test) {
         function finished(errors) {
-            test.equals(errors.length, 0);
+            test.strictEqual(errors, null);
             test.equals(pathUtil.existsSync(__dirname + '/async/folder'), false);
             test.done();
         }
@@ -82,7 +82,7 @@ exports.removeSync = testCase({
         setup('sync');
         errors = removeSync(__dirname + '/sync/folder/folder1/file2.txt');
         test.equals(pathUtil.existsSync(__dirname + '/sync/folder/folder1/file2.txt'), false);
-        test.equals(errors.length, 0);
+        test.strictEqual(errors, null);
         test.done();        
     },
     dir: function(test) {
@@ -91,7 +91,7 @@ exports.removeSync = testCase({
         setup('sync');
         errors = removeSync(__dirname + '/sync/folder');
         test.equals(pathUtil.existsSync(__dirname + '/sync/folder'), false);
-        test.equals(errors.length, 0);
+        test.strictEqual(errors, null);
         test.done();        
     },
     fileFail: function(test) {

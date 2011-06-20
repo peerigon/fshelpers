@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    wrap = require('../../lib/wrap');
+    wrap = require('../../lib').util.wrap;
     
 ///////////////////////////////////////////////////////////////////////////////////////
 

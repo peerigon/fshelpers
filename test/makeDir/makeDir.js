@@ -2,7 +2,9 @@ var testCase = require('nodeunit').testCase,
     pathUtil = require('path'),
     fs = require('fs'),
     makeDir = require('../../lib').makeDir,
-    makeDirSync = require('../../lib').makeDirSync;
+    makeDirSync = require('../../lib').makeDirSync,
+    makeDirs = require('../../lib').makeDirs,
+    makeDirsSync = require('../../lib').makeDirsSync;    
     
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -17,28 +19,26 @@ function ignoreErr(fn, arg) {
 }
 
 function setup(type) {
-    ignoreErr(fs.unlinkSync, __dirname + '/' + type + '/folder/file1.js');
-    ignoreErr(fs.unlinkSync, __dirname + '/' + type + '/folder/folder1/file2.txt');
-    ignoreErr(fs.unlinkSync, __dirname + '/' + type + '/folder/folder2/file3.html');     
-    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder');
+    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2/folder1');
+    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2/folder2');
+    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2/folder3');
+    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder1/folder1');
+    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder1/folder2');
+    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder1/folder3');
     ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder1');
     ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2');
-    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2/folder3');
+    ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder');
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 exports.makeDir = testCase({
-    setUp: function(callback) {
-        setup('async');
-        callback();
-    },
     makeDir: function(test) { 
         var times = 0;
         
-        function finished() {
+        function finished(error) {
             times++;
-            test.equals(arguments.length, 0);   // ensure that there is no error
+            test.strictEqual(error, null);
             if(times === 2) {
                 test.ok(pathUtil.existsSync(__dirname + '/async/folder'));
                 test.ok(pathUtil.existsSync(__dirname + '/async/folder/folder1'));
@@ -48,6 +48,7 @@ exports.makeDir = testCase({
             }
         }
         
+        setup('async');
         test.expect(6);
         makeDir(__dirname, '/async/folder/folder2/folder3', finished);
         makeDir(__dirname, '/async/folder/folder1', 0755, finished);
@@ -55,11 +56,8 @@ exports.makeDir = testCase({
 });
 
 exports.makeDirSync = testCase({
-    setUp: function(callback) {
-        setup('sync');
-        callback();
-    },
     makeDir: function(test) {
+        setup('sync');
         makeDirSync(__dirname, '/sync/folder/folder2/folder3');
         makeDirSync(__dirname, '/sync/folder/folder1', 0755);
         test.ok(pathUtil.existsSync(__dirname + '/sync/folder'));
@@ -67,5 +65,65 @@ exports.makeDirSync = testCase({
         test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder2'));
         test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder2/folder3'));
         test.done();        
+    }
+});
+
+exports.makeDirs = testCase({
+    makeDirs: function(test) {
+        function finished(errors) {
+            test.strictEqual(errors, null);
+            test.ok(pathUtil.existsSync(__dirname + '/async/folder/folder1/folder1'));
+            test.ok(pathUtil.existsSync(__dirname + '/async/folder/folder1/folder2'));
+            test.ok(pathUtil.existsSync(__dirname + '/async/folder/folder1/folder3'));
+            test.ok(pathUtil.existsSync(__dirname + '/async/folder/folder2/folder1'));
+            test.ok(pathUtil.existsSync(__dirname + '/async/folder/folder2/folder2'));
+            test.ok(pathUtil.existsSync(__dirname + '/async/folder/folder2/folder3'));            
+            test.done();
+        }
+        
+        test.expect(7);
+        setup('async');
+        makeDirs(__dirname,
+            [
+                'async/folder/folder2/folder1/',
+                'async/folder/folder2/folder2',
+                '/async/folder/folder2/folder3',
+                'async/folder/folder1/folder1',
+                '/async/folder/folder1/folder2',
+                'async/folder/folder1/folder3',
+                'async/folder/folder1/',
+                'async/folder/folder2',
+                '/async/folder'
+            ],
+        finished);
+    }
+});
+
+exports.makeDirsSync = testCase({
+    makeDirsSync: function(test) {
+        var errors;
+        
+        setup('sync');
+        errors = makeDirsSync(__dirname,
+            [
+                'sync/folder/folder2/folder1/',
+                'sync/folder/folder2/folder2',
+                'sync/folder/folder2/folder3',
+                '/sync/folder/folder1/folder1',
+                '/sync/folder/folder1/folder2',
+                'sync/folder/folder1/folder3',
+                'sync/folder/folder1/',
+                '/sync/folder/folder2',
+                'sync/folder'
+            ]
+        );
+        test.strictEqual(errors, null);
+        test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder1/folder1'));
+        test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder1/folder2'));
+        test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder1/folder3'));
+        test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder2/folder1'));
+        test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder2/folder2'));
+        test.ok(pathUtil.existsSync(__dirname + '/sync/folder/folder2/folder3'));               
+        test.done();
     }
 });
