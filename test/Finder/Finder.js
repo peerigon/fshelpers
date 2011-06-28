@@ -1,7 +1,7 @@
 var testCase = require('nodeunit').testCase,
     Finder = require('../../').Finder,
     pathUtil = require('path');
-    
+
 var reader = new Finder(),
     folder1 = __dirname + '/folder1';
 
@@ -31,7 +31,7 @@ module.exports = testCase({
     hasAllItemsFound: function(test) {
         var expectedResult = {},
             result = {};
-        
+
         expectedResult[__dirname + '/folder1'] = true;
         expectedResult[__dirname + '/folder1/folder2'] = true;
         expectedResult[__dirname + '/folder1/file1.js'] = true;
@@ -40,7 +40,7 @@ module.exports = testCase({
         expectedResult[__dirname + '/folder1/folder1/file1.js'] = true;
         expectedResult[__dirname + '/folder1/folder1/folder1'] = true;
         expectedResult[__dirname + '/folder1/folder1/folder1/file1.js'] = true;
-        
+
         test.expect(3);
         reader
             .on('fileOrDir', function(path) {
@@ -60,14 +60,14 @@ module.exports = testCase({
             __dirname + '/folder1/folder1/file1.js',
             __dirname + '/folder1/folder1/folder1/file1.js'
         ];
-        
+
         test.expect(2);
         reader
             .on('end', function(path, collection) {
                 test.deepEqual(collection.sort(), expectedResult.sort());
             })
-            .walk(folder1); 
-        finish(test);           
+            .walk(folder1);
+        finish(test);
     },
     doesNotReadFiles: function(test) {
         test.expect(1);
@@ -76,11 +76,11 @@ module.exports = testCase({
                 throw new Error('This event should not be fired');
             })
             .walk(folder1);
-        finish(test);           
+        finish(test);
     },
     hasAllFilesRead: function(test) {
         var result = {};
-        
+
         test.expect(5);
         reader
             .on('fileRead', function(path, data) {
@@ -88,7 +88,7 @@ module.exports = testCase({
             })
             .on('end', function() {
                 var key;
-
+                
                 for(key in result) {
                     test.equal(
                         trimPath(key),
@@ -97,14 +97,14 @@ module.exports = testCase({
                 }
             })
             .walk(folder1, Finder.RECURSIVE, 'utf8');
-        finish(test);          
+        finish(test);
     },
     idleStartingTest: function(test) {
         test.expect(1);
         reader
             .once('idle', function() {
                 reader.walk(resolve('./folder1'));
-                reader.once('idle', function() {    
+                reader.once('idle', function() {
                     throw new Error('This event should not be fired');
                 });
             })
@@ -125,7 +125,7 @@ module.exports = testCase({
     },
     walkWhenIdleTest: function(test) {
         var times = 0;
-        
+
         test.expect(2);
         reader
             .on('end', function(path) {
@@ -168,11 +168,11 @@ module.exports = testCase({
             .once('end', function() {
                 finish(test);
             })
-            .walk(resolve('./folder1'));        
+            .walk(resolve('./folder1'));
     },
     independentInstanceTest: function(test) {
         var otherFinder = new Finder();
-    
+
         reader
             .on('file', function() {});
         test.ok(reader.listeners('file').length !== otherFinder.listeners('file').length);
@@ -180,7 +180,7 @@ module.exports = testCase({
     },
     errorTest: function(test) {
         var error = false;
-        
+
         test.expect(2);
         reader
             .on('error', function() {
@@ -190,11 +190,11 @@ module.exports = testCase({
                 test.ok(error);
                 finish(test);
             })
-            .walk('./asdasd/');        
+            .walk('./asdasd/');
     },
     parallelTestRun: function(test) {
         var countedItems = 0;
-        
+
         test.expect(2);
         reader
             .on('file', function(path) {
@@ -206,11 +206,11 @@ module.exports = testCase({
             })
             .walk(resolve('./folder1'));
         reader
-            .walk(resolve('./folder1'));        
+            .walk(resolve('./folder1'));
     },
     depthTest: function(test) {
         var countedItems = 0;
-        
+
         test.expect(2);
         reader
             .on('file', function() {
@@ -225,7 +225,7 @@ module.exports = testCase({
     walkSyncVsWalk: function(test) {
         var times = 0,
             result = [];
-        
+
         function finished(path, collection) {
             result[times] = collection;
             times++;
@@ -233,14 +233,14 @@ module.exports = testCase({
                 test.deepEqual(result[0], result[1]);
             }
         }
-        
+
         test.expect(2);
         reader
             .on('end', finished)
             .walkSync(resolve('./folder1'), Finder.RECURSIVE, 'utf8');
         reader
-            .walk(resolve('./folder1'), Finder.RECURSIVE, 'utf8');       
-        finish(test);            
+            .walk(resolve('./folder1'), Finder.RECURSIVE, 'utf8');
+        finish(test);
     },
     walkSyncStop: function(test) {
         test.expect(1);
@@ -260,7 +260,7 @@ module.exports = testCase({
             .on('error', function() {
                 finish(test);
             });
-        
+
         test.doesNotThrow(function() {
             reader.walk('./asdasd');
         });
