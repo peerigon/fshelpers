@@ -2,12 +2,12 @@ var reporter = require('nodeunit').reporters.default;
 
 reporter.run(
     [
-        'Finder/Finder.js',
-        'wrap/wrap.js',
-        'collectErr/collectErr.js',
-        'remove/remove.js',
-        'makeDir/makeDir.js',
-        'paths2obj/paths2obj.js',
-        'write/write.js'
+        'test/Finder/Finder.js',
+        'test/wrap/wrap.js',
+        'test/collectErr/collectErr.js',
+        'test/remove/remove.js',
+        'test/makeDir/makeDir.js',
+        'test/paths2obj/paths2obj.js',
+        'test/write/write.js'
     ]
 );
