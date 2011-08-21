@@ -14,7 +14,7 @@ function ignoreErr(fn, arg) {
     try {
         fn.apply(fs, args);
     } catch(err) {
-
+        
     }
 }
 
