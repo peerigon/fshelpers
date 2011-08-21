@@ -17,6 +17,7 @@ function ignoreErr(fn, arg) {
 }
 
 function setup(type) {
+    ignoreErr(fs.mkdirSync, __dirname + '/' + type, 0755);
     ignoreErr(fs.mkdirSync, __dirname + '/' + type + '/folder', 0755);
     ignoreErr(fs.mkdirSync, __dirname + '/' + type + '/folder/folder1', 0755);
     ignoreErr(fs.mkdirSync, __dirname + '/' + type + '/folder/folder2', 0755);
@@ -46,7 +47,6 @@ exports.remove = testCase({
             test.equals(pathUtil.existsSync(__dirname + '/async/folder'), false);
             test.done();
         }
-        
         
         setup('async');
         test.expect(2);
