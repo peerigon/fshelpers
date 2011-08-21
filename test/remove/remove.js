@@ -47,6 +47,7 @@ exports.remove = testCase({
             test.done();
         }
         
+        
         setup('async');
         test.expect(2);
         remove(__dirname + '/async/folder', finished);        
