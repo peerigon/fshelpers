@@ -34,6 +34,7 @@ module.exports = testCase({
 
         expectedResult[__dirname + '/folder1'] = true;
         expectedResult[__dirname + '/folder1/folder2'] = true;
+        expectedResult[__dirname + '/folder1/folder2/file1.js'] = true;
         expectedResult[__dirname + '/folder1/file1.js'] = true;
         expectedResult[__dirname + '/folder1/file2.txt'] = true;
         expectedResult[__dirname + '/folder1/folder1'] = true;
@@ -58,7 +59,8 @@ module.exports = testCase({
             __dirname + '/folder1/file1.js',
             __dirname + '/folder1/file2.txt',
             __dirname + '/folder1/folder1/file1.js',
-            __dirname + '/folder1/folder1/folder1/file1.js'
+            __dirname + '/folder1/folder1/folder1/file1.js',
+            __dirname + '/folder1/folder2/file1.js',
         ];
 
         test.expect(2);
@@ -81,7 +83,7 @@ module.exports = testCase({
     hasAllFilesRead: function(test) {
         var result = {};
 
-        test.expect(5);
+        test.expect(6);
         reader
             .on('fileRead', function(path, data) {
                 result[path] = data;
@@ -201,7 +203,7 @@ module.exports = testCase({
                 countedItems++;
             })
             .on('end', function() {
-                test.equal(countedItems, 8);
+                test.equal(countedItems, 10);
                 finish(test);
             })
             .walk(resolve('./folder1'));
