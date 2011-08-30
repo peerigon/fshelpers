@@ -19,6 +19,7 @@ function ignoreErr(fn, arg) {
 }
 
 function setup(type) {
+    ignoreErr(fs.makeDir, __dirname + '/' + type);
     ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2/folder1');
     ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2/folder2');
     ignoreErr(fs.rmdirSync, __dirname + '/' + type + '/folder/folder2/folder3');
