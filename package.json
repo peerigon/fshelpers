@@ -2,9 +2,9 @@
   "name": "fshelpers",
   "description": "Some helper functions for more convenient file system operations in NodeJS.",
   "version": "0.1.0",
-  "homepage": "http://github.com/jhnns/fshelpers",
-  "repository": "git://github.com/jhnns/fshelpers.git",
-  "author": "Johannes Ewald <johannes.ewald@gmx.de>",
+  "homepage": "http://github.com/pandaa/fshelpers",
+  "repository": "git://github.com/pandaa/fshelpers.git",
+  "author": "Johannes Ewald <mail@johannesewald.de>",
   "main": "./lib/index.js",
   "keywords": ["fs", "helper", "file", "directory", "folder", "walker", "filesystem", "simple", "recursive"],
   "dependencies": {
@@ -14,11 +14,12 @@
 	  "nodeunit": "0.7.3"
   },
   "engines": {
-    "node": "0.4.x"
+    "node": "0.6.x"
   },
   "licenses" :
-  [ {"type" : "MIT",
-      "url" : "http://github.com/jhnns/fshelpers/raw/master/LICENSE"
+  [
+    {"type" : "MIT",
+        "url" : "http://github.com/pandaa/fshelpers/raw/master/LICENSE"
     }
   ]  
 }
