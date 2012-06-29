@@ -34,12 +34,14 @@ module.exports = testCase({
             result = {};
 
         expectedResult[__dirname + '/folder1'] = true;
+        expectedResult[__dirname + '/folder1/folder1'] = true;
+        expectedResult[__dirname + '/folder1/folder1/folder1'] = true;
+        expectedResult[__dirname + '/folder1/folder1/file1.js'] = true;
         expectedResult[__dirname + '/folder1/folder2'] = true;
         expectedResult[__dirname + '/folder1/folder2/file1.js'] = true;
         expectedResult[__dirname + '/folder1/file1.js'] = true;
         expectedResult[__dirname + '/folder1/file2.txt'] = true;
-        expectedResult[__dirname + '/folder1/folder1'] = true;
-        expectedResult[__dirname + '/folder1/folder1/file1.js'] = true;
+
 
         test.expect(3);
         reader
@@ -142,7 +144,7 @@ module.exports = testCase({
             .walkWhenIdle(resolve('./folder1/folder2'));
     },
     dirFilterTest: function(test) {
-        test.expect(3);
+        test.expect(4);
         reader.dirFilter = function(dirName) {
             return /1$/gi.test(dirName);
         };
