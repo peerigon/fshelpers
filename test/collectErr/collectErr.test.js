@@ -1,5 +1,5 @@
-var testCase = require('nodeunit').testCase,
-    collectErr = require('../../lib').util.collectErr;
+var testCase = require("nodeunit").testCase,
+    collectErr = require("../../lib").util.collectErr;
     
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -9,7 +9,7 @@ function doSomethingRight(arg1, arg2, callback) {
     // do something right
     if(callback) {
         setTimeout(function() {
-            callback(undefined, 'arg4', 'arg5');
+            callback(undefined, "arg4", "arg5");
         }, 0);
     }
 }
@@ -18,7 +18,7 @@ function doSomethingWrong(arg1, arg2, callback) {
     // do something wrong
     if(callback) {
         setTimeout(function() {
-            callback('error');
+            callback("error");
         }, 0);
     }
 }
@@ -31,14 +31,14 @@ module.exports = testCase({
         
         function callback(err, arg4, arg5) {
             test.equal(err, undefined);
-            test.equal(arg4, 'arg4');
-            test.equal(arg5, 'arg5');
+            test.equal(arg4, "arg4");
+            test.equal(arg5, "arg5");
             test.done();
         }
         
         test.expect(4);
         test.doesNotThrow(function() {
-            doSomethingRight('arg1', 'arg2', collectErr(callback, errors));
+            doSomethingRight("arg1", "arg2", collectErr(callback, errors));
         });
     },
     doSomethingWrong: function(test) {
@@ -56,9 +56,9 @@ module.exports = testCase({
         
         test.expect(3);
         test.doesNotThrow(function() {
-            doSomethingWrong('arg1', 'arg2', collectErr(callback, errors));
-            doSomethingWrong('arg1', 'arg2', collectErr(callback, errors));
-            doSomethingWrong('arg1', 'arg2', collectErr(callback, errors));
+            doSomethingWrong("arg1", "arg2", collectErr(callback, errors));
+            doSomethingWrong("arg1", "arg2", collectErr(callback, errors));
+            doSomethingWrong("arg1", "arg2", collectErr(callback, errors));
         });
     },
     doSomethingWithoutCallback: function(test) {
@@ -66,7 +66,7 @@ module.exports = testCase({
         
         test.expect(1);
         test.doesNotThrow(function() {
-            doSomethingRight('arg1', 'arg2', collectErr(undefined, errors));
+            doSomethingRight("arg1", "arg2", collectErr(undefined, errors));
         });
         setTimeout(function() {
             test.done();
