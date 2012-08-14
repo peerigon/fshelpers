@@ -1,10 +1,10 @@
 {
   "name": "fshelpers",
   "description": "Some helper functions for more convenient file system operations in NodeJS.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "http://github.com/pandaa/fshelpers",
   "repository": "git://github.com/pandaa/fshelpers.git",
-  "author": "Johannes Ewald <mail@johannesewald.de>",
+  "author": "peerigon (hello@peerigon.com)",
   "main": "./lib/index.js",
   "keywords": ["fs", "helper", "file", "directory", "folder", "walker", "filesystem", "simple", "recursive"],
   "dependencies": {
